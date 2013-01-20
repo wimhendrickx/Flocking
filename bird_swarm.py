@@ -82,6 +82,7 @@ class zwerm:
         while count < aantalvogels:
             self.__vv.append(self.addbird())
             count = count + 1
+        print "%s vogels toegevoegd" % count
 
     def vlieg(self):
         random.shuffle(self.__vv)
@@ -128,7 +129,10 @@ class zwerm:
             print('dit is de inputlocatie voor geefmidden: %s' % (l))
             xloccum = xloccum + l.geefx()
             yloccum = yloccum + l.geefy()
-        return locatie(xloccum/self.geefaantalvogels(),yloccum/self.geefaantalvogels())
+        nieuwex = float(xloccum / self.geefaantalvogels())
+        nieuwey = float(yloccum / self.geefaantalvogels())
+        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
+        return locatie(nieuwex, nieuwey)
 
     def vuldelucht(self):
         pass
