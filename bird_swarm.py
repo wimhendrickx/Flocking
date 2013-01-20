@@ -4,13 +4,10 @@ import time
 from Tkinter import *
 from sympy import *
 from sympy.geometry import *
-import sys
-
-sys.path.append('/Users/Wim/Bird Swarm')
 
 #GLOBALVARS
 g_aantalvogels = 3
-g_groottescherm = 1000
+g_groottescherm = 600
 g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
@@ -85,12 +82,17 @@ class zwerm:
         while count < aantalvogels:
             self.__vv.append(self.addbird())
             count = count + 1
+        print "%s vogels toegevoegd" % count
 
     def vlieg(self):
         random.shuffle(self.__vv)
+        midden = self.geefmidden()
         for v in self.__vv:
-            print('Dit is het midden: %s' % (self.geefmidden()))
-            v.flapper(self.geefmidden());
+            print('Dit is het midden: %s, %s' % (float(midden.geefx()), float(midden.geefy())))
+            v.flapper(midden);
+
+    def geefvogels(self):
+        return self.__vv
 
     def geefaantalvogels(self):
         return len(self.__vv)
@@ -121,12 +123,16 @@ class zwerm:
  
     def geefmidden(self):
         xloccum,yloccum = 0,0
+        print "%s vogels te testen" % len(self.__vv)
         for v in self.__vv:
             l = v.geeflocatie()
             print('dit is de inputlocatie voor geefmidden: %s' % (l))
             xloccum = xloccum + l.geefx()
             yloccum = yloccum + l.geefy()
-        return locatie(xloccum/self.geefaantalvogels(),yloccum/self.geefaantalvogels())
+        nieuwex = float(xloccum / self.geefaantalvogels())
+        nieuwey = float(yloccum / self.geefaantalvogels())
+        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
+        return locatie(x=nieuwex, y=nieuwey)
 
     def vuldelucht(self):
         pass
@@ -161,13 +167,3 @@ class locatie:
     def zety(self, y):
         self.__yloc = round(x,2)
 
-master = Tk()
-z = zwerm(g_aantalvogels,master)
-#z.bepaalmidden()
-
-for t in range(1,g_aantalticks):
-    print('ronde')
-    print(t)
-    z.vlieg()
-#    time.sleep(0.50)
-#master.mainloop()
