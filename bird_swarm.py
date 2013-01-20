@@ -158,13 +158,3 @@ class locatie:
     def zety(self, y):
         self.__yloc = round(x,2)
 
-master = Tk()
-z = zwerm(g_aantalvogels,master)
-#z.bepaalmidden()
-
-for t in range(1,g_aantalticks):
-    print('ronde')
-    print(t)
-    z.vlieg()
-#    time.sleep(0.50)
-#master.mainloop()
