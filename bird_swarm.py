@@ -88,7 +88,7 @@ class zwerm:
         random.shuffle(self.__vv)
         midden = self.geefmidden()
         for v in self.__vv:
-            print('Dit is het midden: %s' % (midden))
+            print('Dit is het midden: %s, %s' % (float(midden.geefx()), float(midden.geefy())))
             v.flapper(midden);
 
     def geefvogels(self):
@@ -132,7 +132,7 @@ class zwerm:
         nieuwex = float(xloccum / self.geefaantalvogels())
         nieuwey = float(yloccum / self.geefaantalvogels())
         print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
-        return locatie(nieuwex, nieuwey)
+        return locatie(x=nieuwex, y=nieuwey)
 
     def vuldelucht(self):
         pass
