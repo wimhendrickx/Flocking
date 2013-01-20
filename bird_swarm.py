@@ -80,7 +80,7 @@ class zwerm:
         self.__vv = []
         count = 0
         while count < aantalvogels:
-            self.__vv.append(self.addbird())
+            self.addbird()
             count = count + 1
         print "%s vogels toegevoegd" % count
 
@@ -104,7 +104,7 @@ class zwerm:
     def addbird(self):
         self.__v = vogel(self.__lcanvas)
         self.__lcanvas.create_oval(self.__v.geeflocatie().geefx()-3,self.__v.geeflocatie().geefy()-3,self.__v.geeflocatie().geefx()+3,self.__v.geeflocatie().geefy()+3,fill='red',outline='black',width=3)
-        return self.__v
+        self.__vv.append(self.__v)
 
 
 ##    def bepaalmidden(self):
