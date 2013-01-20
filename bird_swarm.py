@@ -85,9 +85,10 @@ class zwerm:
 
     def vlieg(self):
         random.shuffle(self.__vv)
+        midden = self.geefmidden()
         for v in self.__vv:
-            print('Dit is het midden: %s' % (self.geefmidden()))
-            v.flapper(self.geefmidden());
+            print('Dit is het midden: %s' % (midden))
+            v.flapper(midden);
 
     def geefvogels(self):
         return self.__vv
@@ -121,6 +122,7 @@ class zwerm:
  
     def geefmidden(self):
         xloccum,yloccum = 0,0
+        print "%s vogels te testen" % len(self.__vv)
         for v in self.__vv:
             l = v.geeflocatie()
             print('dit is de inputlocatie voor geefmidden: %s' % (l))
