@@ -36,6 +36,11 @@ class Test_Zwerm(unittest.TestCase):
         zw = zwerm(1, master)
         self.assertEqual(zw.geefaantalvogels(), 1)
 
+    def test_getVogels(self):
+        master = Tk()
+        zw = zwerm(1, master)
+        self.assertEqual(len(zw.geefvogels()), 1)
+
     """
     def test_geefmidden(self):
         master = Tk()

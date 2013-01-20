@@ -89,6 +89,9 @@ class zwerm:
             print('Dit is het midden: %s' % (self.geefmidden()))
             v.flapper(self.geefmidden());
 
+    def geefvogels(self):
+        return self.__vv
+
     def geefaantalvogels(self):
         return len(self.__vv)
 
