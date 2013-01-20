@@ -4,9 +4,6 @@ import time
 from Tkinter import *
 from sympy import *
 from sympy.geometry import *
-import sys
-
-sys.path.append('/Users/Wim/Bird Swarm')
 
 #GLOBALVARS
 g_aantalvogels = 3
