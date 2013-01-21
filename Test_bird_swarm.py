@@ -30,6 +30,12 @@ class Test_Locatie(unittest.TestCase):
         loc = locatie()
         self.assertTrue(loc.geefy() < g_groottescherm)
 
+    def test_division_x(self):
+        setx = float(1)/2
+	print setx
+        loc = locatie(x=setx)
+	self.assertTrue(loc.geefx(), 0.5)
+
 class Test_Zwerm(unittest.TestCase):
     def test_init(self):
         zw = zwerm(1, Tk())
