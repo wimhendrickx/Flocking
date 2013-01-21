@@ -39,24 +39,43 @@ class Test_Zwerm(unittest.TestCase):
         zw = zwerm(1, Tk())
         self.assertEqual(len(zw.geefvogels()), 1)
 
-    def test_geefmidden(self):
+    def test_geefmidden_oneBird_x(self):
         zw = zwerm(1, Tk())
         vogel = zw.geefvogels()[0]
         x1 = vogel.geeflocatie().geefx()
-        y1 = vogel.geeflocatie().geefy()
         self.assertEqual(zw.geefmidden().geefx(), x1)
+
+    def test_geefmidden_oneBird_y(self):
+        zw = zwerm(1, Tk())
+        vogel = zw.geefvogels()[0]
+        y1 = vogel.geeflocatie().geefy()
         self.assertEqual(zw.geefmidden().geefy(), y1)
-        zw.addbird()
-        vogel2 = zw.geefvogels()[1]
-        x2 = vogel2.geeflocatie().geefx()
-        y2 = vogel2.geeflocatie().geefy()
+
+    def test_geefmidden_twoBirds_x(self):
+        zw = zwerm(2, Tk())
+	x1 = zw.geefvogels()[0].geeflocatie().geefx()
+	x2 = zw.geefvogels()[1].geeflocatie().geefx()
         self.assertEqual(zw.geefmidden().geefx(), (x1+x2)/2)
+
+    def test_geefmidden_twoBirds_y(self):
+        zw = zwerm(2, Tk())
+        vogel2 = zw.geefvogels()[1]
+	y1 = zw.geefvogels()[0].geeflocatie().geefy()
+	y2 = zw.geefvogels()[1].geeflocatie().geefy()
         self.assertEqual(zw.geefmidden().geefy(), (y1+y2)/2)
-        zw.addbird()
-        vogel3 = zw.geefvogels()[2]
-        x3 = vogel3.geeflocatie().geefx()
-        y3 = vogel3.geeflocatie().geefy()
+
+    def test_geefmidden_threeBirds_x(self):
+        zw = zwerm(3, Tk())
+	x1 = zw.geefvogels()[0].geeflocatie().geefx()
+	x2 = zw.geefvogels()[1].geeflocatie().geefx()
+	x3 = zw.geefvogels()[2].geeflocatie().geefx()
         self.assertEqual(zw.geefmidden().geefx(), (x1+x2+x3)/3)
+
+    def test_geefmidden_threeBirds_y(self):
+        zw = zwerm(3, Tk())
+	y1 = zw.geefvogels()[0].geeflocatie().geefy()
+	y2 = zw.geefvogels()[1].geeflocatie().geefy()
+	y3 = zw.geefvogels()[2].geeflocatie().geefy()
         self.assertEqual(zw.geefmidden().geefy(), (y1+y2+y3)/3)
 
     def test_geefaantalvogel(self):
