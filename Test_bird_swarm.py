@@ -32,8 +32,9 @@ class Test_Locatie(unittest.TestCase):
 
     def test_division_x(self):
         setx = float(1)/2
+	sety = 1
 	print setx
-        loc = locatie(x=setx)
+        loc = locatie(x=setx, y=1)
 	self.assertTrue(loc.geefx(), 0.5)
 
 class Test_Zwerm(unittest.TestCase):
