@@ -142,18 +142,21 @@ class locatie:
     
     def __init__(self,x=None,y=None):
         if x is None and y is None:
-            self.__p = Point(random.randint(0,g_groottescherm),random.randint(0,g_groottescherm))
+	    self.__xloc = random.randint(0, g_groottescherm)
+	    self.__yloc = random.randint(0, g_groottescherm)
         else:
-            self.__p = Point(round(x,2),round(y,2))
+	    self.__xloc = round(float(x), 2)
+	    self.__yloc = round(float(y), 2)
+	self.__p = Point(self.__xloc, self.__yloc)
 
     def __str__(self):
         return 'X%sY%s' % (self.__p.x, self.__p.y)
 
     def geefx(self):
-        return self.__p.x
+        return self.__xloc
 
     def geefy(self):
-        return self.__p.y
+        return self.__yloc
 
     def zetpunt(self, p):
         self.__p = Point(round(p.x,2),round(p.y,2))
