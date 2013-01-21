@@ -46,7 +46,8 @@ class vogel:
             print('geen punten gevonden')
         else:
             print('punten gevonden')
-            self.__ll.zetpunt(lijstvanpunten[0])
+	    print "punt: {0}, x: {1}, y: {2}".format(lijstvanpunten[0], lijstvanpunten[0].x, lijstvanpunten[0].y)
+            self.__ll.zetpunt(x=float(lijstvanpunten[0].x), y=float(lijstvanpunten[0].y))
    #     self.__ll.zetpunt()
 ##        #boven of onder?
 ##        if self.__ll.geefx() >= midden.geefx():
@@ -147,7 +148,7 @@ class locatie:
         else:
 	    self.__xloc = round(float(x), 2)
 	    self.__yloc = round(float(y), 2)
-	self.__p = Point(self.__xloc, self.__yloc)
+	self.resetpunt()
 
     def __str__(self):
         return 'X%sY%s' % (self.__p.x, self.__p.y)
@@ -158,15 +159,20 @@ class locatie:
     def geefy(self):
         return self.__yloc
 
-    def zetpunt(self, p):
-        self.__p = Point(round(p.x,2),round(p.y,2))
+    def resetpunt(self):
+        self.__p = Point(self.__xloc, self.__yloc)
 
     def geefpunt(self):
         return self.__p
 
     def zetx(self, x):
         self.__xloc = round(x,2)
+	self.resetpunt()
 
     def zety(self, y):
-        self.__yloc = round(x,2)
+        self.__yloc = round(y,2)
+	self.resetpunt()
 
+    def zetpunt(self, x, y):
+        self.zetx(x)
+	self.zety(y)
