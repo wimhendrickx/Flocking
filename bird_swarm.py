@@ -12,7 +12,7 @@ g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
 
-class form:
+class formulier():
     '''Opstartklasse'''
     def start(self,ifv):
         z = zwerm(10,ifv)
@@ -21,7 +21,7 @@ class form:
     def drukopdemoknop(self):
         self.start(graphicvisualizer())
 
-    def __init__(self):
+    def __init__():
         pass
 
 class zwerm():

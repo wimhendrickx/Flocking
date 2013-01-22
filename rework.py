@@ -15,7 +15,7 @@ g_aantalticks = 10
 class form:
     '''Opstartklasse'''
     def start(self,ifv):
-        z = zwerm(10,ifv)
+        z = zwerm(g_groottevogel,ifv)
         for t in range(1,g_aantalticks):
             z.vlieg()
     def drukopdemoknop(self):
