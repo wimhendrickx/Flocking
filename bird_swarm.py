@@ -1,9 +1,9 @@
-"""Mijn eerste module"""
+from Tkinter import *
 import random
 import time
-from Tkinter import *
 from sympy import *
 from sympy.geometry import *
+import abc
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -12,42 +12,61 @@ g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
 
-##def tekenlijn(canvas,ol,nl):
-##    """Deze dient enkel om de vogels een visueel spoor achter te laten"""
-##    canvas.create_line(ol.geefx(), ol.geefy(), nl.geefx(), nl.geefy(),fill='black', width=1, arrow=LAST)
-##
-##def tekencirkel(canvas,nl,cirkel=None):
-##    __straal = g_groottevogel/2
-##    if cirkel is None:
-##        """CREATE"""
-##        cirkel = canvas.create_oval(nl.geefx()-__straal,nl.geefy()-__straal,nl.geefx()+__straal,nl.geefy()+__straal,fill='red',outline='black',width=1)
-##    else:
-##        """MOVE"""
-##        canvas.coords(cirkel,nl.geefx()-__straal,nl.geefy()-__straal,nl.geefx()+__straal,nl.geefy()+__straal)
-##    canvas.update()    
-##    return cirkel
-
-class gvogel(object):
-    """Dit is de grafische superklasse van zwerm, om zo de specieke grafische opdrachten uit de klasse te weren"""
-    def __init__(self, l):
-        # Hier zou de gvogel ook toegang moeten krijgen tot het canvas ...
-        pass
-
-    def tekenmezelf(self, nieuw):
-        if nieuw:
-            cirkel = gcanvas.create_oval(l.geefx()-__straal,l.geefy()-__straal,l.geefx()+__straal,l.geefy()+__straal,fill='red',outline='black',width=1)
-        else:
-            gcanvas.coords(cirkel,l.geefx()-__straal,l.geefy()-__straal,l.geefx()+__straal,l.geefy()+__straal)
-        canvas.update()
-#        gcanvas.create_oval(self.__v.geeflocatie().geefx()-3,self.__v.geeflocatie().geefy()-3,self.__v.geeflocatie().geefx()+3,self.__v.geeflocatie().geefy()+3,fill='red',outline='black',width=3)
-
-class vogel(gvogel):
-    """Dit is een vogel"""
+class form:
+    '''Opstartklasse'''
+    def start(self,ifv):
+        z = zwerm(10,ifv)
+        for t in range(1,g_aantalticks):
+            z.vlieg()
+    def drukopdemoknop(self):
+        self.start(graphicvisualizer())
 
     def __init__(self):
+        pass
+
+class zwerm():
+    '''De klasse vogel'''
+    def __init__(self,aantal,ifv):
+        self.__ifv = ifv
+        self.__vv = []
+        count = 0
+        while count < aantal:
+            self.addbird()
+            count += 1
+    
+    def addbird(self):
+        self.__vv.append(vogel(self.__ifv))
+        
+    def vlieg(self):
+        random.shuffle(self.__vv)
+        midden = self.geefmidden()
+        for v in self.__vv:
+##            print('Dit is het midden: %s, %s' % (float(midden.geefx()), float(midden.geefy())))
+            v.flapper(midden);
+
+    def geefaantalvogels(self):
+        return len(self.__vv)
+    
+    def geefmidden(self):
+        xloccum,yloccum = 0,0
+        print "%s vogels te testen" % len(self.__vv)
+        for v in self.__vv:
+            l = v.geeflocatie()
+            print('dit is de inputlocatie voor geefmidden: %s' % (l))
+            xloccum = xloccum + l.geefx()
+            yloccum = yloccum + l.geefy()
+        nieuwex = float(xloccum / self.geefaantalvogels())
+        nieuwey = float(yloccum / self.geefaantalvogels())
+        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
+        return locatie(nieuwex, nieuwey)
+
+        
+class vogel():
+    '''De klasse vogel'''
+    def __init__(self,ifv):
+        self.__ifv = ifv
         self.__ll = locatie()
-        super(vogel,self).__init__(self.__ll)
-        super(vogel,self).tekenmezelf(True)
+        self.__ifv.tekenvogel(self)
         
     def geeflocatie(self):
         return self.__ll
@@ -63,89 +82,46 @@ class vogel(gvogel):
             print('punten gevonden')
 	    print "punt: {0}, x: {1}, y: {2}".format(lijstvanpunten[0], lijstvanpunten[0].x, lijstvanpunten[0].y)
             self.__ll.zetpunt(x=float(lijstvanpunten[0].x), y=float(lijstvanpunten[0].y))
-            
+
     def flapper(self,midden):
         oudelocatie = locatie(self.geeflocatie().geefx(), self.geeflocatie().geefy())
         print('net voor zetten')
         self.zetlocatie(midden)
+        self.__ifv.tekenvogel(self)
         print('net na zetten')
         print('juist voor tekenen')
         #tekencirkel(self.__canvas,self.geeflocatie(),self.__repr)
-        super.tekenmezelf(False) #Dit is nu een taak van de superklasse
+        ##super.tekenmezelf(False) #Dit is nu een taak van de superklasse
         print('juist na tekenen')
         #tekenlijn(self.__canvas, oudelocatie, self.geeflocatie())
-        self.__canvas.update()
 
-class gzwerm(object):
-    """Dit is de grafische superklasse van zwerm, om zo de specieke grafische opdrachten uit de klasse te weren"""
-  
+class ivisualizer(object):
+    __metaclass__ = abc.ABCMeta
+    '''Het contract waaraan de kinderen moeten voldoen'''
+    
+    @abc.abstractmethod
+    def tekenvogel(self,vogel,nieuw):
+        return
+       
+class graphicvisualizer(ivisualizer):
+    '''Hier wordt de grafische interface gedefinieerd'''
     def __init__(self):
         master = Tk()
-        gcanvas = Canvas(master,width=g_groottescherm,height=g_groottescherm)
-        gcanvas.pack()             
+        self.gcanvas = Canvas(master,width=g_groottescherm,height=g_groottescherm)
+        self.gcanvas.pack()
+        self.vogelcords = {}
+        
+    def tekenvogel(self,vogel):
+        l = vogel.geeflocatie()
+        if self.vogelcords.has_key(vogel):
+            cirkel = self.vogelcords[vogel]
+            self.gcanvas.coords(cirkel,l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel)            
+        else:
+            cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
+            self.vogelcords[vogel] = cirkel 
+        self.gcanvas.update()
+    
 
-class zwerm(gzwerm):
-    """Deze zwerm bevat de vogels"""
-
-    def __init__(self,aantalvogels,master):
-        super(zwerm, self).__init__()
-        self.__vv = []
-        count = 0
-        while count < aantalvogels:
-            self.addbird()
-            count = count + 1
-##        print "%s vogels toegevoegd" % count
-
-    def vlieg(self):
-        random.shuffle(self.__vv)
-        midden = self.geefmidden()
-        for v in self.__vv:
-            print('Dit is het midden: %s, %s' % (float(midden.geefx()), float(midden.geefy())))
-            v.flapper(midden);
-
-    def geefvogels(self):
-        return self.__vv
-
-    def geefaantalvogels(self):
-        return len(self.__vv)
-
-    def killbird(self):
-        if self.geefaantalvogels() > 0:
-            self.__vv.pop()
-
-    def addbird(self):
-        self.__v = vogel()
-        self.__vv.append(self.__v)
-
-##    def bepaalmidden(self):
-##        count,xloccum,yloccum = 0,0,0
-##        while count < self.geefaantalvogels():
-##            l = self.__vv[count].geeflocatie()
-##            xloccum = xloccum + l.geefx()
-##            yloccum = yloccum + l.geefy()
-##            count = count + 1
-##        xloccum = xloccum/self.geefaantalvogels()
-##        yloccum = yloccum/self.geefaantalvogels()
-##        self.__lcanvas.create_oval(xloccum-6,yloccum-6,xloccum+6,yloccum+6,fill='blue',outline='black',width=3)
-##        middenloc = locatie()
-##        middenloc.zetx(xloccum)
-##        middenloc.zety(yloccum)
- 
-    def geefmidden(self):
-        xloccum,yloccum = 0,0
-        print "%s vogels te testen" % len(self.__vv)
-        for v in self.__vv:
-            l = v.geeflocatie()
-            print('dit is de inputlocatie voor geefmidden: %s' % (l))
-            xloccum = xloccum + l.geefx()
-            yloccum = yloccum + l.geefy()
-        nieuwex = float(xloccum / self.geefaantalvogels())
-        nieuwey = float(yloccum / self.geefaantalvogels())
-        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
-        return locatie(x=nieuwex, y=nieuwey)
-
-    def vuldelucht(self):
-        pass
 
 class locatie:
     """De locatie van een vogel"""

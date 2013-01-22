@@ -3,7 +3,7 @@ import random
 import time
 from sympy import *
 from sympy.geometry import *
-from abc import ABCMeta
+import abc
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -94,8 +94,16 @@ class vogel():
         ##super.tekenmezelf(False) #Dit is nu een taak van de superklasse
         print('juist na tekenen')
         #tekenlijn(self.__canvas, oudelocatie, self.geeflocatie())
-        
-class graphicvisualizer():
+
+class ivisualizer(object):
+    __metaclass__ = abc.ABCMeta
+    '''Het contract waaraan de kinderen moeten voldoen'''
+    
+    @abc.abstractmethod
+    def tekenvogel(self,vogel,nieuw):
+        return
+       
+class graphicvisualizer(ivisualizer):
     '''Hier wordt de grafische interface gedefinieerd'''
     def __init__(self):
         master = Tk()
@@ -113,10 +121,7 @@ class graphicvisualizer():
             self.vogelcords[vogel] = cirkel 
         self.gcanvas.update()
     
-class ivisualizer():
-    '''Het contract waaraan de kinderen '''
-    def tekenvogel(self,vogel,nieuw):
-        pass
+
 
 class locatie:
     """De locatie van een vogel"""
