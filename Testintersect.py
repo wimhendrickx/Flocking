@@ -37,3 +37,11 @@ class Test_intersect(unittest.TestCase):
 	point2_y = 5
 	expected_distance = 5
 	self.assertEqual(expected_distance, intersect.distanceBetweenPoints(point1_x, point1_y, point2_x, point2_y))
+
+    def testdistance_zero(self):
+        point1_x = 1
+	point1_y = 1
+	point2_x = 1
+	point2_y = 1
+	expected_distance = 0
+	self.assertEqual(expected_distance, intersect.distanceBetweenPoints(point1_x, point1_y, point2_x, point2_y))
