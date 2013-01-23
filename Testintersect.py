@@ -55,3 +55,13 @@ class Test_intersect(unittest.TestCase):
 	point2_y = 3
 	expected_point = [point1_x, point1_y]
 	self.assertEqual(expected_point, intersect.getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, point2_y))
+
+    def test_getnearestPoint_equal(self):
+	ref_point_x = 1
+	ref_point_y = 1
+        point1_x = 2
+	point1_y = 2
+	point2_x = point1_x
+	point2_y = point1_y
+	expected_point = []
+	self.assertEqual(expected_point, intersect.getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, point2_y))
