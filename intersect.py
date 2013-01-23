@@ -1,6 +1,6 @@
 import math
 
-def getIntersectingPoints(circlecenter_x, circlecenter_y, radius, point_x, point_y):
+def getIntersectingPoints(point_x, point_y, radius, circlecenter_x, circlecenter_y):
     """
     find the intersecting points between the circle and the line through the circle center and one other point
     """
