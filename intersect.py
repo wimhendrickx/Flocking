@@ -47,4 +47,5 @@ def getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, poin
     return point
 
 def distanceBetweenPoints(point1_x, point1_y, point2_x, point2_y):
-    pass
+    dist = math.sqrt((point2_x - point1_x) ** 2 + (point2_y - point1_y) ** 2)
+    return dist
