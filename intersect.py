@@ -9,10 +9,10 @@ def getIntersectingPoints(circlecenter_x, circlecenter_y, radius, point_x, point
     A = dx*dx + dy*dy
     #B = 2*(dx*(circlecenter_x - circlecenter_x) + dy*(circlecenter_y - circlecenter_y))
     B = 0 # the previous formula evaluates to 0
-    #C = (circlecenter_x - circlecenter_x) * (circlecenter_x - circlecenter_x) + (circlecenter_y - circlecenter_y) * (circlecenter_y - circlecenter_y) - radius * radius
+    #C = (circlecenter_x - circlecenter_x) ** 2 + (circlecenter_y - circlecenter_y) ** 2 - radius * radius
     C = - radius * radius # simplify previous line
 
-    det = B * B - 4 * A * C
+    det = B ** 2 - 4 * A * C
 
     if det < 0.0000001 or det < 0:
 	#no points
