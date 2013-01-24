@@ -1,9 +1,10 @@
 from Tkinter import *
 import random
 import time
-from sympy import *
-from sympy.geometry import *
+##from sympy import *
+##from sympy.geometry import *
 import abc
+import intersect
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -49,15 +50,15 @@ class zwerm():
     
     def geefmidden(self):
         xloccum,yloccum = 0,0
-        print "%s vogels te testen" % len(self.__vv)
+##        print "%s vogels te testen" % len(self.__vv)
         for v in self.__vv:
             l = v.geeflocatie()
-            print('dit is de inputlocatie voor geefmidden: %s' % (l))
+##            print('dit is de inputlocatie voor geefmidden: %s' % (l))
             xloccum = xloccum + l.geefx()
             yloccum = yloccum + l.geefy()
         nieuwex = float(xloccum / self.geefaantalvogels())
         nieuwey = float(yloccum / self.geefaantalvogels())
-        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
+##        print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
         return locatie(nieuwex, nieuwey)
 
     def geefvogels(self):
@@ -79,23 +80,32 @@ class vogel():
 
     def zetlocatie(self,midden):
         print('punt: %s en midden: %s' % (self.geeflocatie(),midden))
-        lijnstukvogelmidden = Segment(self.geeflocatie().geefpunt(),midden.geefpunt())
-        cirkelvelocityvogel = Circle(self.geeflocatie().geefpunt(),g_flapperafstand)
-        lijstvanpunten = intersection(lijnstukvogelmidden,cirkelvelocityvogel)
-        if len(lijstvanpunten) == 0:
-            print('geen punten gevonden')
+        snijpunten = intersect.getIntersectingPoints(self.__ll.geefx(),self.__ll.geefy(), g_flapperafstand, midden.geefx(), midden.geefy())
+        if len(snijpunten) == 1:
+            print('INTERSECT: de nieuwe midden methode return: %s' % (snijpunten[0][0]))
+            self.__ll.zetpunt(snijpunten[0][0])
         else:
-            print('punten gevonden')
-	    print "punt: {0}, x: {1}, y: {2}".format(lijstvanpunten[0], lijstvanpunten[0].x, lijstvanpunten[0].y)
-            self.__ll.zetpunt(x=float(lijstvanpunten[0].x), y=float(lijstvanpunten[0].y))
+            print('INTERSECT: geen punten gevonden')
+            print('INTERSECT: afstand was %s' % (intersect.distanceBetweenPoints(self.__ll.geefx(),self.__ll.geefx(),midden.geefx(),midden.geefy())))
+            pass
+           
+##        lijnstukvogelmidden = Segment(self.geeflocatie().geefpunt(),midden.geefpunt())
+##        cirkelvelocityvogel = Circle(self.geeflocatie().geefpunt(),g_flapperafstand)
+##        lijstvanpunten = intersection(lijnstukvogelmidden,cirkelvelocityvogel)
+##        if len(lijstvanpunten) == 0:
+##            print('geen punten gevonden')
+##        else:
+##            print('punten gevonden')
+##	    print "punt: {0}, x: {1}, y: {2}".format(lijstvanpunten[0], lijstvanpunten[0].x, lijstvanpunten[0].y)
+##            self.__ll.zetpunt(x=float(lijstvanpunten[0].x), y=float(lijstvanpunten[0].y))
 
     def flapper(self,midden):
         oudelocatie = locatie(self.geeflocatie().geefx(), self.geeflocatie().geefy())
-        print('net voor zetten')
+##        print('net voor zetten')
         self.zetlocatie(midden)
         self.__ifv.tekenvogel(self)
-        print('net na zetten')
-        print('juist voor tekenen')
+##        print('net na zetten')
+##        print('juist voor tekenen')
         #tekencirkel(self.__canvas,self.geeflocatie(),self.__repr)
         ##super.tekenmezelf(False) #Dit is nu een taak van de superklasse
         print('juist na tekenen')
@@ -144,10 +154,10 @@ class locatie:
         else:
 	    self.__xloc = round(float(x), 2)
 	    self.__yloc = round(float(y), 2)
-	self.resetpunt()
+##	self.resetpunt()
 
     def __str__(self):
-        return 'X%sY%s' % (self.__p.x, self.__p.y)
+        return 'X%sY%s' % (self.__xloc, self.__yloc)
 
     def geefx(self):
         return self.__xloc
@@ -155,19 +165,19 @@ class locatie:
     def geefy(self):
         return self.__yloc
 
-    def resetpunt(self):
-        self.__p = Point(self.__xloc, self.__yloc)
+##    def resetpunt(self):
+##        self.__p = Point(self.__xloc, self.__yloc)
 
     def geefpunt(self):
         return self.__p
 
     def zetx(self, x):
         self.__xloc = round(x,2)
-	self.resetpunt()
+##	self.resetpunt()
 
     def zety(self, y):
         self.__yloc = round(y,2)
-	self.resetpunt()
+##	self.resetpunt()
 
     def zetpunt(self, x, y):
         self.zetx(x)

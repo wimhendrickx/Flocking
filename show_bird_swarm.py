@@ -1,5 +1,4 @@
 import bird_swarm
-print dir(bird_swarm)
 
 #GLOBALVARS
 g_aantalvogels = 3

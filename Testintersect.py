@@ -65,3 +65,11 @@ class Test_intersect(unittest.TestCase):
 	point2_y = point1_y
 	expected_point = []
 	self.assertEqual(expected_point, intersect.getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, point2_y))
+
+    def test_getIntersectingPoints_notequalfromstartpoint(self):
+        self.assertNotEqual([1, 1],intersect.getIntersectingPoints(1,1,3,100,100))
+
+    def test__getIntersectingPoints_find1point(self):
+        #afstand tussen de punten zou 295.169442863 zijn < g_flapperafstand
+        self.assertEquel(1,len(intersect.getIntersectingPoints(546,565,50,283.0,412.0)))
+        
