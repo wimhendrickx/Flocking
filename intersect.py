@@ -58,3 +58,6 @@ def getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, poin
 def distanceBetweenPoints(point1_x, point1_y, point2_x, point2_y):
     dist = math.sqrt((point2_x - point1_x) ** 2 + (point2_y - point1_y) ** 2)
     return dist
+
+def getIntersectingPointsOnSegment():
+    pass
