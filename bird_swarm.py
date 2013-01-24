@@ -127,6 +127,12 @@ class graphicvisualizer(ivisualizer):
             self.vogelcords[vogel] = cirkel 
         self.gcanvas.update()
 
+class testvisualizer(ivisualizer):
+    def __init__(self):
+        pass
+
+    def tekenvogel(self,vogel):
+        pass
 
 class locatie:
     """De locatie van een vogel"""
