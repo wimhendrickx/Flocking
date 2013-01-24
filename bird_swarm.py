@@ -21,7 +21,7 @@ class formulier():
     def drukopdemoknop(self):
         self.start(graphicvisualizer())
 
-    def __init__():
+    def __init__(self):
         pass
 
 class zwerm():
@@ -60,7 +60,13 @@ class zwerm():
         print "nieuwe x: %s; nieuwe y: %s" % (nieuwex, nieuwey)
         return locatie(nieuwex, nieuwey)
 
-        
+    def geefvogels(self):
+        return self.__vv
+
+    def killbird(self):
+        if self.geefaantalvogels() > 0:
+            self.__vv.pop()
+            
 class vogel():
     '''De klasse vogel'''
     def __init__(self,ifv):
@@ -120,7 +126,6 @@ class graphicvisualizer(ivisualizer):
             cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
             self.vogelcords[vogel] = cirkel 
         self.gcanvas.update()
-    
 
 
 class locatie:
