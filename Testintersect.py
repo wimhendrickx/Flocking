@@ -71,5 +71,5 @@ class Test_intersect(unittest.TestCase):
 
     def test__getIntersectingPoints_find1point(self):
         #afstand tussen de punten zou 295.169442863 zijn < g_flapperafstand
-        self.assertEquel(1,len(intersect.getIntersectingPoints(546,565,50,283.0,412.0)))
+        self.assertEqual(1,len(intersect.getIntersectingPoints(546,565,50,283.0,412.0)))
         
