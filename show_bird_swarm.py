@@ -8,5 +8,5 @@ g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
 
-f = formulier()
+f = bird_swarm.formulier()
 f.drukopdemoknop()
