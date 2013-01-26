@@ -34,14 +34,11 @@ def getIntersectingPoints(point_x, point_y, radius, circlecenter_x, circlecenter
 	t2 = float((-B - math.sqrt(det)) / (2*A))
 	new_point2_x = point_x + t2*dx
 	new_point2_y = point_y + t2*dy
-
-	if ((point_x < new_point1_x and new_point1_x < circlecenter_x) or (point_x > new_point1_x and new_point1_x > circlecenter_x)) and ((point_y < new_point1_y and new_point1_y < circlecenter_y) or (point_y > new_point1_y and new_point1_y > circlecenter_y)):
-            points.append([new_point1_x, new_point1_y])
-        if ((point_x < new_point2_x and new_point2_x < circlecenter_x) or (point_x > new_point2_x and new_point2_x > circlecenter_x)) and ((point_y < new_point2_y and new_point2_y < circlecenter_y) or (point_y > new_point2_y and new_point2_y > circlecenter_y)):
-            points.append([new_point2_x, new_point2_y])
-##	points =[[new_point1_x, new_point1_y], [new_point2_x, new_point2_y]]
-
-##    print ('getIntersectingPoints: %s' % (points))
+##	if ((point_x < new_point1_x and new_point1_x < circlecenter_x) or (point_x > new_point1_x and new_point1_x > circlecenter_x)) and ((point_y < new_point1_y and new_point1_y < circlecenter_y) or (point_y > new_point1_y and new_point1_y > circlecenter_y)):
+##            points.append([new_point1_x, new_point1_y])
+##        if ((point_x < new_point2_x and new_point2_x < circlecenter_x) or (point_x > new_point2_x and new_point2_x > circlecenter_x)) and ((point_y < new_point2_y and new_point2_y < circlecenter_y) or (point_y > new_point2_y and new_point2_y > circlecenter_y)):
+##            points.append([new_point2_x, new_point2_y])
+	points =[[new_point1_x, new_point1_y], [new_point2_x, new_point2_y]]
     return points
 
 def getnearestPoint(ref_point_x, ref_point_y, point1_x, point1_y, point2_x, point2_y):

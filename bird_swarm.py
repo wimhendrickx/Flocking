@@ -76,8 +76,12 @@ class vogel():
 
     def zetlocatie(self,midden):
         snijpunten = intersect.getIntersectingPoints(self.__ll.geefx(),self.__ll.geefy(), g_flapperafstand, midden.geefx(), midden.geefy())
-        if len(snijpunten) == 1:
-            self.__ll.zetpunt(snijpunten[0][0],snijpunten[0][1])
+        if len(snijpunten) == 2:
+            #Er worden normaal altijd 2 punten gevonden. Nu moet er bepaald worden wel punt er het dichtst bij het midden ligt
+            if intersect.distanceBetweenPoints(snijpunten[0][0],snijpunten[0][1],midden.geefx(),midden.geefy()) <= intersect.distanceBetweenPoints(snijpunten[1][0],snijpunten[1][1],midden.geefx(),midden.geefy()):
+                self.__ll.zetpunt(snijpunten[0][0],snijpunten[0][1])
+            else:
+                self.__ll.zetpunt(snijpunten[1][0],snijpunten[1][1])               
         else:
             pass
 
