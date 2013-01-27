@@ -36,7 +36,7 @@ class zwerm():
             count += 1
     
     def addbird(self):
-        self.__vv.append(vogel(self.__ifv))
+        self.__vv.append(vogel(self,self.__ifv))
         
     def vlieg(self):
         random.shuffle(self.__vv)
@@ -63,13 +63,23 @@ class zwerm():
     def killbird(self):
         if self.geefaantalvogels() > 0:
             self.__vv.pop()
+
+    def isLocationFree(self,doel):
+        for v in self.__vv:
+            l = v.geeflocatie()
+##            print('%s %s %s %s %s %s' % (doel[0],doel[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2))
+            if intersect.isIntersectingCircles(doel[0],doel[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2):
+                #Er bevindt zich een vogel op dit doel!
+                return False
+        return True
             
 class vogel():
     '''De klasse vogel'''
-    def __init__(self,ifv):
+    def __init__(self,zwerm,ifv):
         self.__ifv = ifv
         self.__ll = locatie()
         self.__ifv.tekenvogel(self)
+        self.__zwerm = zwerm
         
     def geeflocatie(self):
         return self.__ll
@@ -79,9 +89,13 @@ class vogel():
         if len(snijpunten) == 2:
             #Er worden normaal altijd 2 punten gevonden. Nu moet er bepaald worden wel punt er het dichtst bij het midden ligt
             if intersect.distanceBetweenPoints(snijpunten[0][0],snijpunten[0][1],midden.geefx(),midden.geefy()) <= intersect.distanceBetweenPoints(snijpunten[1][0],snijpunten[1][1],midden.geefx(),midden.geefy()):
-                self.__ll.zetpunt(snijpunten[0][0],snijpunten[0][1])
+                doel = snijpunten[0]               
             else:
-                self.__ll.zetpunt(snijpunten[1][0],snijpunten[1][1])               
+                doel = snijpunten[1]
+            #Doel is nu het wiskundige punt dat zich het dichtst bij het midden bevindt
+            #Nu moet er getest worden of we dit doel kunnen bereiken (botsingen)
+            if self.__zwerm.isLocationFree(doel):
+                self.__ll.zetpunt(doel[0],doel[1])
         else:
             pass
 

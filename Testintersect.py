@@ -71,5 +71,13 @@ class Test_intersect(unittest.TestCase):
 
     def test__getIntersectingPoints_find1point(self):
         #afstand tussen de punten zou 295.169442863 zijn < g_flapperafstand
-        self.assertEqual(1,len(intersect.getIntersectingPoints(546,565,50,283.0,412.0)))
-        
+        self.assertEqual(2,len(intersect.getIntersectingPoints(546,565,50,283.0,412.0)))
+
+    def test_isIntersectingCircles_false(self):
+        self.assertFalse(intersect.isIntersectingCircles(1,1,2,8,8,3))
+
+    def test_isIntersectingCircles_(self):
+        self.assertTrue(intersect.isIntersectingCircles(1,1,5,8,8,5))
+
+    def test_isIntersectingCircles_circlestouch(self):
+        self.assertTrue(intersect.isIntersectingCircles(1,1,2,3,1,2))    

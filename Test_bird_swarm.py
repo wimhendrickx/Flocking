@@ -5,7 +5,8 @@ class Test_Vogel(unittest.TestCase):
     def test_init(self):
 ##        testcanvas = Canvas(Tk(),width=800,height=400)
 ##        testcanvas.pack()
-        testvogel = vogel(testvisualizer())
+        tv = testvisualizer()
+        testvogel = vogel(zwerm(0,tv),tv)
         self.assertTrue(testvogel.geeflocatie() != None)
 
 class Test_Locatie(unittest.TestCase):
@@ -100,4 +101,15 @@ class Test_Zwerm(unittest.TestCase):
         self.assertEqual(zw.geefaantalvogels(), 0)
         zw.killbird()
         self.assertEqual(zw.geefaantalvogels(), 0)
-        
+
+    def test_islocationFree_false(self):
+        zw = zwerm(1, testvisualizer())
+        zw.geefvogels()[0].geeflocatie().zetx(30)
+        zw.geefvogels()[0].geeflocatie().zety(40)
+        self.assertFalse(zw.isLocationFree([30,40]))
+
+    def test_islocationFree_true(self):
+        zw = zwerm(1, testvisualizer())
+        zw.geefvogels()[0].geeflocatie().zetx(30)
+        zw.geefvogels()[0].geeflocatie().zety(40)
+        self.assertTrue(zw.isLocationFree([300,400]))

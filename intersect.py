@@ -58,3 +58,10 @@ def distanceBetweenPoints(point1_x, point1_y, point2_x, point2_y):
 
 def getIntersectingPointsOnSegment():
     pass
+
+def isIntersectingCircles(circlecenter1_x, circlecenter1_y, radius1, circlecenter2_x, circlecenter2_y, radius2):
+    '''Bestaat er ten minste 1 snijpunt?'''
+    if distanceBetweenPoints(circlecenter1_x, circlecenter1_y, circlecenter2_x, circlecenter2_y) > radius1 + radius2:
+        return False
+    else:
+        return True 
