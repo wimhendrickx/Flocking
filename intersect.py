@@ -21,7 +21,7 @@ def getIntersectingPoints(point_x, point_y, radius, circlecenter_x, circlecenter
 	#no points
         pass
     elif det == 0:
-        #one point
+        #one point 
 	t = -B/(2*A)
 	new_point_x = point_x + t*dx
 	new_point_y = point_y + t*dy

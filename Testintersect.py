@@ -80,4 +80,7 @@ class Test_intersect(unittest.TestCase):
         self.assertTrue(intersect.isIntersectingCircles(1,1,5,8,8,5))
 
     def test_isIntersectingCircles_circlestouch(self):
-        self.assertTrue(intersect.isIntersectingCircles(1,1,2,3,1,2))    
+        self.assertTrue(intersect.isIntersectingCircles(1,1,2,3,1,2)) 
+    
+    def test_isIntersectingCircles_circlescross_1(self):
+        self.assertFalse(intersect.isIntersectingCircles(30,35,3,40,45,3))   
