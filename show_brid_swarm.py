@@ -9,3 +9,5 @@ g_aantalticks = 10
 
 f = form()
 f.drukopdemoknop()
+while true:
+    pass

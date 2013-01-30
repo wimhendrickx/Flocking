@@ -5,6 +5,7 @@ import time
 ##from sympy.geometry import *
 import abc
 import intersect
+import datetime
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -16,18 +17,24 @@ g_aantalticks = 10
 class formulier():
     '''Opstartklasse'''
     def start(self,ifv):
-        z = zwerm(10,ifv)
+        self.z = zwerm(10,ifv)
         for t in range(1,g_aantalticks):
-            z.vlieg()
+            self.z.vlieg()
     def drukopdemoknop(self):
-        self.start(graphicvisualizer())
-
+        self.gv = graphicvisualizer()
+        self.start(self.gv)
+        self.gv.master.mainloop()
+    
+    def pressOneTickButton():
+        pass
+    
     def __init__(self):
         pass
 
 class zwerm():
     '''De klasse vogel'''
     def __init__(self,aantal,ifv):
+        open('log.txt', 'w').close() #We starten van een propere log
         self.__ifv = ifv
         self.__vv = []
         count = 0
@@ -42,7 +49,8 @@ class zwerm():
         random.shuffle(self.__vv)
         midden = self.geefmidden()
         for v in self.__vv:
-            v.flapper(midden);
+            v.flapper(midden)
+        self.logTick()
 
     def geefaantalvogels(self):
         return len(self.__vv)
@@ -72,6 +80,14 @@ class zwerm():
                 #Er bevindt zich een vogel op dit doel!
                 return False
         return True
+    
+    def logTick(self):
+        with open('log.txt','a') as f:
+            now = datetime.datetime.now()
+            f.write('TICK @ %s\n' % now.strftime("%Y-%m-%d %H:%M:%S"))
+            for v in self.__vv:
+                f.write('\t%s\n' % str(v.geeflocatie()))
+        f.closed
             
 class vogel():
     '''De klasse vogel'''
@@ -114,10 +130,15 @@ class ivisualizer(object):
        
 class graphicvisualizer(ivisualizer):
     '''Hier wordt de grafische interface gedefinieerd'''
+    def cmdOneTick(self):
+        pass
+        
     def __init__(self):
-        master = Tk()
-        self.gcanvas = Canvas(master,width=g_groottescherm,height=g_groottescherm)
+        self.master = Tk()
+        self.gcanvas = Canvas(self.master,width=g_groottescherm,height=g_groottescherm)
         self.gcanvas.pack()
+        btn_1tick = Button(self.master, text="Move 1 tick", command=self.cmdOneTick)
+        btn_1tick.pack()
         self.vogelcords = {}
         
     def tekenvogel(self,vogel):
@@ -149,7 +170,7 @@ class locatie:
 	    self.__yloc = round(float(y), 2)
 
     def __str__(self):
-        return 'X%sY%s' % (self.__xloc, self.__yloc)
+        return '(%s:%s)' % (self.__xloc, self.__yloc)
 
     def geefx(self):
         return self.__xloc
