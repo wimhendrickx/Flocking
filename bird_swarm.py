@@ -1,4 +1,4 @@
-from Tkinter import *
+import Tkinter
 import random
 import time
 ##from sympy import *
@@ -6,6 +6,9 @@ import time
 import abc
 import intersect
 import datetime
+import Queue
+import threading
+import random
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -17,9 +20,9 @@ g_aantalticks = 10
 class GuiPart(object):
     def __init__(self, master, queue, endCommand): 
         self.queue = queue
-        # Set up the GUI
-        Tkinter.Button(master, text='Done', command=endCommand).pack( ) 
-        # Add more GUI stuff here depending on your specific needs
+        # Add more GUI stuff here depending on your specific needs  
+        Tkinter.Canvas(master,width=g_groottescherm,height=g_groottescherm).pack()
+        Tkinter.Button(master, text="Move 1 tick", command=endCommand).pack()
         
     def processIncoming(self):
         """ Handle all messages currently in the queue, if any. """ 
@@ -45,7 +48,10 @@ class ThreadedClient(object):
 
     def __init__(self, master):
         """
-        Start the GUI and the asynchronous threads. We are in the "main" (original) thread of the application, which will later be used by the GUI as well. We spawn a new thread for the worker (I/O).
+        Start the GUI and the asynchronous threads. 
+        We are in the "main" (original) thread of the application, 
+        which will later be used by the GUI as well. 
+        We spawn a new thread for the worker (I/O).
         """
         self.master = master
         # Create the queue
@@ -78,8 +84,9 @@ class ThreadedClient(object):
         """
         while self.running:
             # To simulate asynchronous I/O, create a random number at random 
-            # intervals. Replace the following two lines with the real thing. time.sleep(rand.random( ) * 1.5)
-            msg = rand.random( )
+            # intervals. Replace the following two lines with the real thing. 
+            time.sleep(random.random( ) * 1.5)
+            msg = random.random( )
             self.queue.put(msg)
 
     def endApplication(self): 
@@ -201,16 +208,11 @@ class ivisualizer(object):
        
 class graphicvisualizer(ivisualizer):
     '''Hier wordt de grafische interface gedefinieerd'''
-    def cmdOneTick(self):
-        pass
-        
     def __init__(self):
-        self.master = Tk()
-        self.gcanvas = Canvas(self.master,width=g_groottescherm,height=g_groottescherm)
-        self.gcanvas.pack()
-        btn_1tick = Button(self.master, text="Move 1 tick", command=self.cmdOneTick)
-        btn_1tick.pack()
-        self.vogelcords = {}
+       root = Tkinter.Tk()
+       client = ThreadedClient(root)
+       root.mainloop()
+       self.vogelcords = {}
         
     def tekenvogel(self,vogel):
         l = vogel.geeflocatie()
