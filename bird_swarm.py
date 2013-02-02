@@ -9,6 +9,7 @@ import datetime
 import Queue
 import threading
 import random
+import pdb
 
 #GLOBALVARS
 g_aantalvogels = 3
@@ -16,95 +17,6 @@ g_groottescherm = 600
 g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
-
-class GuiPart(object):
-    def __init__(self, master, queue, endCommand): 
-        self.queue = queue
-        # Add more GUI stuff here depending on your specific needs  
-        Tkinter.Canvas(master,width=g_groottescherm,height=g_groottescherm).pack()
-        Tkinter.Button(master, text="Move 1 tick", command=endCommand).pack()
-        
-    def processIncoming(self):
-        """ Handle all messages currently in the queue, if any. """ 
-        while self.queue.qsize( ):
-            try:
-                msg = self.queue.get(0)
-                # Check contents of message and do whatever is needed. As a 
-                # simple example, let's print it (in real life, you would
-                # suitably update the GUI's display in a richer fashion). 
-                print msg
-            except Queue.Empty:
-                # just on general principles, although we don't expect this 
-                # branch to be taken in this case, ignore this exception!
-                pass
-
-class ThreadedClient(object):
-    """
-    Launch the "main" part of the GUI and the worker thread. 
-    periodicCall and endApplication could reside in the GUI part, 
-    but putting them here
-    means that you have all the thread controls in a single place.
-    """
-
-    def __init__(self, master):
-        """
-        Start the GUI and the asynchronous threads. 
-        We are in the "main" (original) thread of the application, 
-        which will later be used by the GUI as well. 
-        We spawn a new thread for the worker (I/O).
-        """
-        self.master = master
-        # Create the queue
-        self.queue = Queue.Queue( )
-        # Set up the GUI part
-        self.gui = GuiPart(master, self.queue, self.endApplication)
-        # Set up the thread to do asynchronous I/O
-        # More threads can also be created and used, if necessary 
-        self.running = True
-        self.thread1 = threading.Thread(target=self.workerThread1) 
-        self.thread1.start( )
-        # Start the periodic call in the GUI to check the queue 
-        self.periodicCall( )
-        
-    def periodicCall(self):
-        """ Check every 200 ms if there is something new in the queue. """ 
-        self.master.after(200, self.periodicCall) 
-        self.gui.processIncoming( )
-        if not self.running:
-            # This is the brutal stop of the system. You may want to do 
-            # some cleanup before actually shutting it down.
-            import sys
-            sys.exit(1)
-            
-    def workerThread1(self):
-        """
-        This is where we handle the asynchronous I/O. For example, it may be 
-        a 'select( )'. One important thing to remember is that the thread has 
-        to yield control pretty regularly, be it by select or otherwise.
-        """
-        while self.running:
-            # To simulate asynchronous I/O, create a random number at random 
-            # intervals. Replace the following two lines with the real thing. 
-            time.sleep(random.random( ) * 1.5)
-            msg = random.random( )
-            self.queue.put(msg)
-
-    def endApplication(self): 
-        self.running = False
-
-class formulier():
-    '''Opstartklasse'''
-    def start(self):
-        self.gv = graphicvisualizer()
-        self.z = zwerm(10,self.gv)
-        for t in range(1,g_aantalticks):
-            self.z.vlieg()
-    
-    def pressOneTickButton():
-        self.z.vlieg()
-    
-    def __init__(self):
-        pass
 
 class zwerm():
     '''De klasse vogel'''
@@ -167,6 +79,7 @@ class zwerm():
 class vogel():
     '''De klasse vogel'''
     def __init__(self,zwerm,ifv):
+        pdb.set_trace()
         self.__ifv = ifv
         self.__ll = locatie()
         self.__ifv.tekenvogel(self)
@@ -195,6 +108,115 @@ class vogel():
         self.zetlocatie(midden)
         self.__ifv.tekenvogel(self)
 
+class GuiPart(object):
+    def __init__(self, master, queue, endCommand): 
+        self.queue = queue
+        # Add more GUI stuff here depending on your specific needs  
+        Tkinter.Canvas(master,width=g_groottescherm,height=g_groottescherm).pack()
+        Tkinter.Button(master, text="Move 1 tick", command=self.doSomething).pack()
+        self.vogelcords = {}
+    
+    def doSomething():
+        pass
+    
+    def processIncoming(self):
+        """ Handle all messages currently in the queue, if any. """ 
+        while self.queue.qsize( ):
+            try:
+                # Check contents of message and do whatever is needed. As a 
+                # simple example, let's print it (in real life, you would
+                # suitably update the GUI's display in a richer fashion). 
+                msg = self.queue.get(0)
+                try:
+                        vogel = msg
+                        l = vogel.geeflocatie()
+                        if self.vogelcords.has_key(vogel):
+                            cirkel = self.vogelcords[vogel]
+                            self.gcanvas.coords(cirkel,l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel)            
+                        else:
+                            cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
+                            self.vogelcords[vogel] = cirkel 
+                        self.gcanvas.update()
+                except:
+                    pass
+            except Queue.Empty:
+                # just on general principles, although we don't expect this 
+                # branch to be taken in this case, ignore this exception!
+                pass
+
+class ThreadedClient(object):
+    """
+    Launch the "main" part of the GUI and the worker thread. 
+    periodicCall and endApplication could reside in the GUI part, 
+    but putting them here
+    means that you have all the thread controls in a single place.
+    """
+
+    def __init__(self, master):
+        """
+        Start the GUI and the asynchronous threads. 
+        We are in the "main" (original) thread of the application, 
+        which will later be used by the GUI as well. 
+        We spawn a new thread for the worker (I/O).
+        """
+        
+        self.master = master
+        # Create the queue
+        self.queue = Queue.Queue( )
+        # Set up the GUI part
+        self.gui = GuiPart(master, self.queue, self.endApplication)
+        # Set up the thread to do asynchronous I/O
+        # More threads can also be created and used, if necessary 
+        self.running = True
+        self.thread1 = threading.Thread(target=self.workerThread1) 
+        self.thread1.start()
+        # Start the periodic call in the GUI to check the queue 
+        self.periodicCall()
+        
+    def periodicCall(self):
+        """ Check every 200 ms if there is something new in the queue. """ 
+        self.master.after(200, self.periodicCall) 
+        self.gui.processIncoming( )
+        if not self.running:
+            # This is the brutal stop of the system. You may want to do 
+            # some cleanup before actually shutting it down.
+            import sys
+            sys.exit(1)
+            
+    def workerThread1(self):
+        """
+        This is where we handle the asynchronous I/O. For example, it may be 
+        a 'select( )'. One important thing to remember is that the thread has 
+        to yield control pretty regularly, be it by select or otherwise.
+        """
+        while self.running:
+            # To simulate asynchronous I/O, create a random number at random 
+            # intervals. Replace the following two lines with the real thing. 
+            pass
+            ## time.sleep(random.random( ) * 1.5)
+#             msg = random.random( )
+#             self.queue.put(msg)
+
+    def endApplication(self): 
+        self.running = False
+        
+    def tc_TekenVogel(self,vogel):
+        self.queue.put(vogel)
+
+class formulier():
+    '''Opstartklasse'''
+    def start(self):
+        self.gv = graphicvisualizer()
+        self.z = zwerm(10,self.gv)
+#         for t in range(1,g_aantalticks):
+#             self.z.vlieg()
+    
+    def pressOneTickButton():
+        self.z.vlieg()
+    
+    def __init__(self):
+        pass
+
 class ivisualizer(object):
     __metaclass__ = abc.ABCMeta
     '''Het contract waaraan de kinderen moeten voldoen'''
@@ -207,23 +229,17 @@ class graphicvisualizer(ivisualizer):
     '''Hier wordt de grafische interface gedefinieerd'''
     def __init__(self):
        root = Tkinter.Tk()
-       client = ThreadedClient(root)
-       self.vogelcords = {}
+       self.client = ThreadedClient(root)
+       
         
     def bindFunctions(self):
         pass
     
     def tekenvogel(self,vogel):
+        self.client.tc_TekenVogel(vogel)
         # Dit wordt een taak van de ThreadedClient
         # Nog uitzoeken hoe een taak op de queue moet gezet worden
-        l = vogel.geeflocatie()
-        if self.vogelcords.has_key(vogel):
-            cirkel = self.vogelcords[vogel]
-            self.gcanvas.coords(cirkel,l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel)            
-        else:
-            cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
-            self.vogelcords[vogel] = cirkel 
-        self.gcanvas.update()
+        
 
 class testvisualizer(ivisualizer):
     def __init__(self):

@@ -1,4 +1,5 @@
 import bird_swarm
+import pdb
 
 #GLOBALVARS
 g_aantalvogels = 3
