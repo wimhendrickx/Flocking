@@ -2,8 +2,8 @@ import sys
 import unittest
 
 sys.path.append('/Users/Wim/Bird Swarm')
-import Test_bird_swarm
-import Testintersect
+# import Test_bird_swarm
+# import Testintersect
 
 # loader = unittest.TestLoader()
 # suite = loader.loadTestsFromModule(Test_bird_swarm)

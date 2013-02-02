@@ -7,7 +7,4 @@ g_groottevogel = 6
 g_flapperafstand = 50
 g_aantalticks = 10
 
-f = form()
-f.drukopdemoknop()
-while true:
-    pass
+formulier().start()

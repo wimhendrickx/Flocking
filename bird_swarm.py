@@ -94,17 +94,14 @@ class ThreadedClient(object):
 
 class formulier():
     '''Opstartklasse'''
-    def start(self,ifv):
-        self.z = zwerm(10,ifv)
+    def start(self):
+        self.gv = graphicvisualizer()
+        self.z = zwerm(10,self.gv)
         for t in range(1,g_aantalticks):
             self.z.vlieg()
-    def drukopdemoknop(self):
-        self.gv = graphicvisualizer()
-        self.start(self.gv)
-        self.gv.master.mainloop()
     
     def pressOneTickButton():
-        pass
+        self.z.vlieg()
     
     def __init__(self):
         pass
@@ -211,10 +208,14 @@ class graphicvisualizer(ivisualizer):
     def __init__(self):
        root = Tkinter.Tk()
        client = ThreadedClient(root)
-       root.mainloop()
        self.vogelcords = {}
         
+    def bindFunctions(self):
+        pass
+    
     def tekenvogel(self,vogel):
+        # Dit wordt een taak van de ThreadedClient
+        # Nog uitzoeken hoe een taak op de queue moet gezet worden
         l = vogel.geeflocatie()
         if self.vogelcords.has_key(vogel):
             cirkel = self.vogelcords[vogel]
