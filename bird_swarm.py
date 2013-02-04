@@ -122,7 +122,6 @@ class GuiPart(object):
         pass #button action
     
     def processIncoming(self):
-        """ Handle all messages currently in the queue, if any. """ 
         while self.queue.qsize( ):
             try:
                 msg = self.queue.get(0)
