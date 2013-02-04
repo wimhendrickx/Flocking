@@ -79,7 +79,6 @@ class zwerm():
 class vogel():
     '''De klasse vogel'''
     def __init__(self,zwerm,ifv):
-        pdb.set_trace()
         self.__ifv = ifv
         self.__ll = locatie()
         self.__ifv.tekenvogel(self)
@@ -138,7 +137,7 @@ class GuiPart(object):
                             self.vogelcords[vogel] = cirkel 
                         self.gcanvas.update()
                 except:
-                    pass
+                    print('Failed, was van het type %' % type(msg))
             except Queue.Empty:
                 # just on general principles, although we don't expect this 
                 # branch to be taken in this case, ignore this exception!
@@ -152,7 +151,7 @@ class ThreadedClient(object):
     means that you have all the thread controls in a single place.
     """
 
-    def __init__(self, master):
+    def __init__(self, root):
         """
         Start the GUI and the asynchronous threads. 
         We are in the "main" (original) thread of the application, 
@@ -160,28 +159,28 @@ class ThreadedClient(object):
         We spawn a new thread for the worker (I/O).
         """
         
-        self.master = master
+        self.root = root
         # Create the queue
         self.queue = Queue.Queue( )
         # Set up the GUI part
-        self.gui = GuiPart(master, self.queue, self.endApplication)
+        self.gui = GuiPart(root, self.queue, self.endApplication)
         # Set up the thread to do asynchronous I/O
         # More threads can also be created and used, if necessary 
         self.running = True
         self.thread1 = threading.Thread(target=self.workerThread1) 
         self.thread1.start()
         # Start the periodic call in the GUI to check the queue 
-        self.periodicCall()
+#         self.periodicCall()
         
-    def periodicCall(self):
-        """ Check every 200 ms if there is something new in the queue. """ 
-        self.master.after(200, self.periodicCall) 
-        self.gui.processIncoming( )
-        if not self.running:
-            # This is the brutal stop of the system. You may want to do 
-            # some cleanup before actually shutting it down.
-            import sys
-            sys.exit(1)
+#     def periodicCall(self):
+#         """ Check every 200 ms if there is something new in the queue. """ 
+#         self.master.after(200, self.periodicCall) 
+#         self.gui.processIncoming( )
+#         if not self.running:
+#             # This is the brutal stop of the system. You may want to do 
+#             # some cleanup before actually shutting it down.
+#             import sys
+#             sys.exit(1)
             
     def workerThread1(self):
         """
@@ -190,9 +189,11 @@ class ThreadedClient(object):
         to yield control pretty regularly, be it by select or otherwise.
         """
         while self.running:
+            self.root.after(200, self.workerThread1)
+            self.gui.processIncoming( )
             # To simulate asynchronous I/O, create a random number at random 
             # intervals. Replace the following two lines with the real thing. 
-            pass
+            
             ## time.sleep(random.random( ) * 1.5)
 #             msg = random.random( )
 #             self.queue.put(msg)
