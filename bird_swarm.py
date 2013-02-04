@@ -1,4 +1,4 @@
-import Tkinter
+import mtTkinter as Tkinter
 import random
 import time
 ##from sympy import *
@@ -109,56 +109,67 @@ class vogel():
 
 class GuiPart(object):
     def __init__(self, queue, endCommand): 
+#         pdb.set_trace()
         self.queue = queue
-        self.root = Tkinter.Tk()
-        Tkinter.Canvas(self.root,width=g_groottescherm,height=g_groottescherm).pack()
-        Tkinter.Button(self.root, text="Move 1 tick", command=self.doSomething).pack()
-        self.vogelcords = {} #register of bird and their corresponding coordinates 
-        
-    def getRoot(self):
-        return self.root
     
     def doSomething():
         pass #button action
     
+    def setRoot(self, root):
+        self.root = root
+    
+    def drawGeneral(self):
+        print ('draw general')
+        self.gcanvas = Tkinter.Canvas(self.root,width=g_groottescherm,height=g_groottescherm)
+        self.gcanvas.pack()
+        Tkinter.Button(self.root, text="Move 1 tick", command=self.doSomething).pack()
+        self.vogelcords = {} #register of bird and their corresponding coordinates  
+    
     def processIncoming(self):
-        while self.queue.qsize( ):
-            try:
-                msg = self.queue.get(0)
-                try:
-                        vogel = msg
-                        l = vogel.geeflocatie()
-                        if self.vogelcords.has_key(vogel):
-                            cirkel = self.vogelcords[vogel]
-                            self.gcanvas.coords(cirkel,l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel)            
-                        else:
-                            cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
-                            self.vogelcords[vogel] = cirkel 
-                        self.gcanvas.update()
-                except:
-                    print('Failed, was van het type %' % type(msg))
-            except Queue.Empty:
-                pass
+        if self.queue.qsize() > 0:
+            print ('processIncoming %s' % self.queue.qsize())
+        try:
+            msg = self.queue.get(0)
+            #try:
+            vogel = msg
+            l = vogel.geeflocatie()
+            if self.vogelcords.has_key(vogel):
+                cirkel = self.vogelcords[vogel]
+                self.gcanvas.coords(cirkel,l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel)            
+            else:
+                cirkel = self.gcanvas.create_oval(l.geefx()-g_groottevogel,l.geefy()-g_groottevogel,l.geefx()+g_groottevogel,l.geefy()+g_groottevogel,fill='red',outline='black',width=1)
+                self.vogelcords[vogel] = cirkel 
+            self.gcanvas.update()
+            #except:
+            #    print('damn niet gelukt')
+        except Queue.Empty:
+            pass
 
-class ThreadedClient(object):
-
+class ThreadedClient(object): 
+    
     def __init__(self):
         self.queue = Queue.Queue( )
         self.gui = GuiPart(self.queue, self.endApplication)
-        self.root = self.gui.getRoot()
+        self.root = 0
         self.running = True
         self.GuiThread = threading.Thread(target=self.workerGuiThread) 
         self.GuiThread.start()
+        print ('kom ik wel na de guithread.start?')
             
     def workerGuiThread(self):
+        if self.root == 0:
+            self.root = Tkinter.Tk()
+            self.gui.setRoot(self.root)
+            self.gui.drawGeneral()
         while self.running:
             self.root.after(200, self.workerGuiThread)
-            self.gui.processIncoming( )     
+            self.gui.processIncoming()     
 
     def endApplication(self): 
         self.running = False
         
     def tc_TekenVogel(self,vogel):
+        print('vul ik de queue wel?')
         self.queue.put(vogel)
 
 class formulier():
@@ -166,8 +177,8 @@ class formulier():
     def start(self):
         self.gv = graphicvisualizer()
         self.z = zwerm(10,self.gv)
-#         for t in range(1,g_aantalticks):
-#             self.z.vlieg()
+        for t in range(1,g_aantalticks):
+             self.z.vlieg()
     
     def pressOneTickButton():
         self.z.vlieg()
@@ -187,6 +198,7 @@ class graphicvisualizer(ivisualizer):
     '''Hier wordt de grafische interface gedefinieerd'''
     def __init__(self):
        self.client = ThreadedClient()
+       print ('en hier')
        
         
     def bindFunctions(self):
