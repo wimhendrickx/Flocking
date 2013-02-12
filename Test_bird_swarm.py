@@ -1,13 +1,7 @@
 from bird_swarm import *
 import unittest
 
-class Test_Vogel(unittest.TestCase):
-    def test_init(self):
-##        testcanvas = Canvas(Tk(),width=800,height=400)
-##        testcanvas.pack()
-        tv = testvisualizer()
-        testvogel = vogel(zwerm(0,tv),tv)
-        self.assertTrue(testvogel.geeflocatie() != None)
+
 
 class Test_Locatie(unittest.TestCase):
     g_groottescherm = 400

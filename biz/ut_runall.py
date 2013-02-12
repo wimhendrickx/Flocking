@@ -8,9 +8,6 @@ sys.path.append('/Users/Wim/Flocking/int')
 
 import ut_bird
 
-
-
-
 loader = unittest.TestLoader()
 suite = loader.loadTestsFromModule(ut_bird)
 runner = unittest.TextTestRunner(verbosity=2)

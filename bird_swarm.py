@@ -98,35 +98,5 @@ class formulier():
     def __init__(self):
         pass
 
-class ivisualizer(object):
-    __metaclass__ = abc.ABCMeta
-    '''Het contract waaraan de kinderen moeten voldoen'''
-    
-    @abc.abstractmethod
-    def tekenvogel(self,vogel,nieuw):
-        return
-       
-class graphicvisualizer(ivisualizer):
-    '''Hier wordt de grafische interface gedefinieerd'''
-    def __init__(self):
-       self.client = ThreadedClient()
-       print ('en hier')
-       
-        
-    def bindFunctions(self):
-        pass
-    
-    def tekenvogel(self,vogel):
-        self.client.tc_TekenVogel(vogel)
-        # Dit wordt een taak van de ThreadedClient
-        # Nog uitzoeken hoe een taak op de queue moet gezet worden
-        
-
-class testvisualizer(ivisualizer):
-    def __init__(self):
-        pass
-
-    def tekenvogel(self,vogel):
-        pass
 
 
