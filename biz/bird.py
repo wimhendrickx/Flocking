@@ -4,7 +4,7 @@ import intersect
 class bird():
     def __init__(self,swarm,ifv):
         self.__ifv = ifv
-        self.__ll = location()
+        self.__ll = location.location()
         self.__ifv.drawBird(self)
         self.__swarm = swarm
         

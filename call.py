@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-sys.path.append('/Users/Wim/Bird Swarm')
+sys.path.append('/Users/Wim/Flocking')
 # import Test_bird_swarm
 # import Testintersect
 

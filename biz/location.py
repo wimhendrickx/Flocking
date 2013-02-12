@@ -1,11 +1,15 @@
+import random
+g_groottescherm = 400
+
 class location:
     """The location of a bird"""
     
     def __init__(self,x=None,y=None):
         if x is None and y is None:
+            global g_groottescherm
             self.__xloc = random.randint(0, g_groottescherm)
             self.__yloc = random.randint(0, g_groottescherm)
-            else:
+        else:
             self.__xloc = round(float(x), 2)
             self.__yloc = round(float(y), 2)
 
@@ -29,4 +33,4 @@ class location:
 
     def setPoint(self, x, y):
         self.setX(x)
-	    self.setY(y)
+        self.setY(y)

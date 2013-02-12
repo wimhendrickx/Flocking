@@ -1,49 +1,48 @@
-class zwerm():
-    '''De klasse vogel'''
+class swarm():
     def __init__(self,aantal,ifv):
         open('log.txt', 'w').close() #We starten van een propere log
         self.__ifv = ifv
         self.__vv = []
         count = 0
         while count < aantal:
-            self.addbird()
+            self.addBird()
             count += 1
     
-    def addbird(self):
-        self.__vv.append(vogel(self,self.__ifv))
+    def addBird(self):
+        self.__vv.append(bird(self,self.__ifv))
         
-    def vlieg(self):
+    def move(self):
         random.shuffle(self.__vv)
-        midden = self.geefmidden()
+        centre = self.getCentre()
         for v in self.__vv:
-            v.flapper(midden)
+            v.fly(centre)
         self.logTick()
 
-    def geefaantalvogels(self):
+    def getNumberOfBirds(self):
         return len(self.__vv)
     
-    def geefmidden(self):
+    def getCentre(self):
         xloccum,yloccum = 0,0
         for v in self.__vv:
-            l = v.geeflocatie()
-            xloccum = xloccum + l.geefx()
-            yloccum = yloccum + l.geefy()
-        nieuwex = float(xloccum / self.geefaantalvogels())
-        nieuwey = float(yloccum / self.geefaantalvogels())
-        return locatie(nieuwex, nieuwey)
+            l = v.getLocation()
+            xloccum = xloccum + l.getX()
+            yloccum = yloccum + l.getY()
+        nieuwex = float(xloccum / self.getNumberOfBirds())
+        nieuwey = float(yloccum / self.getNumberOfBirds())
+        return location(nieuwex, nieuwey)
 
-    def geefvogels(self):
+    def getBirds(self):
         return self.__vv
 
-    def killbird(self):
-        if self.geefaantalvogels() > 0:
+    def killBird(self):
+        if self.getNumberOfBirds() > 0:
             self.__vv.pop()
 
-    def isLocationFree(self,doel):
+    def isLocationFree(self,target):
         for v in self.__vv:
             l = v.geeflocatie()
 ##            print('%s %s %s %s %s %s' % (doel[0],doel[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2))
-            if intersect.isIntersectingCircles(doel[0],doel[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2):
+            if intersect.isIntersectingCircles(target[0],target[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2):
                 #Er bevindt zich een vogel op dit doel!
                 return False
         return True
