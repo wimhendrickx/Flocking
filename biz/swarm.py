@@ -1,3 +1,9 @@
+import bird
+import intersect
+import location
+
+g_groottevogel = 6
+
 class swarm():
     def __init__(self,aantal,ifv):
         open('log.txt', 'w').close() #We starten van een propere log
@@ -9,7 +15,7 @@ class swarm():
             count += 1
     
     def addBird(self):
-        self.__vv.append(bird(self,self.__ifv))
+        self.__vv.append(bird.bird(self,self.__ifv))
         
     def move(self):
         random.shuffle(self.__vv)
@@ -29,7 +35,7 @@ class swarm():
             yloccum = yloccum + l.getY()
         nieuwex = float(xloccum / self.getNumberOfBirds())
         nieuwey = float(yloccum / self.getNumberOfBirds())
-        return location(nieuwex, nieuwey)
+        return location.location(nieuwex, nieuwey)
 
     def getBirds(self):
         return self.__vv
@@ -40,9 +46,9 @@ class swarm():
 
     def isLocationFree(self,target):
         for v in self.__vv:
-            l = v.geeflocatie()
+            l = v.getLocation()
 ##            print('%s %s %s %s %s %s' % (doel[0],doel[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2))
-            if intersect.isIntersectingCircles(target[0],target[1], g_groottevogel/2, v.geeflocatie().geefx(),v.geeflocatie().geefy(),g_groottevogel/2):
+            if intersect.isIntersectingCircles(target[0],target[1], g_groottevogel/2, v.getLocation().getX(),v.getLocation().getY(),g_groottevogel/2):
                 #Er bevindt zich een vogel op dit doel!
                 return False
         return True

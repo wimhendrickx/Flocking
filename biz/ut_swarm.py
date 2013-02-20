@@ -14,7 +14,7 @@ class Test_Swarm(unittest.TestCase):
     def test_getCentre_oneBird_x(self):
         s = swarm.swarm(1, testvisualizer())
         bird = s.getBirds()[0]
-        x1 = bird.getLocation().geefx()
+        x1 = bird.getLocation().getX()
         self.assertEqual(s.getCentre().getX(), x1)
 
     def test_getCentre_oneBird_y(self):
@@ -56,15 +56,15 @@ class Test_Swarm(unittest.TestCase):
 
     def test_addbird(self):
         s = swarm.swarm(1, testvisualizer())
-        s.addbird()
+        s.addBird()
         self.assertEqual(s.getNumberOfBirds(), 2)
 
     def test_killbird(self):
         t = testvisualizer()
         s = swarm.swarm(1, t)
-        s.killbird()
+        s.killBird()
         self.assertEqual(s.getNumberOfBirds(), 0)
-        s.killbird()
+        s.killBird()
         self.assertEqual(s.getNumberOfBirds(), 0)
 
     def test_islocationFree_false(self):
